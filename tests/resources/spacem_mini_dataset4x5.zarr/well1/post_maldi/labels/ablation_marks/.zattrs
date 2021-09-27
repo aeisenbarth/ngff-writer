@@ -1,0 +1,98 @@
+{
+    "image-label": {
+        "version": "0.3"
+    },
+    "multiscales": [
+        {
+            "_transformation": {
+                "parameters": [
+                    [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        650.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        280.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                ],
+                "type": "affine"
+            },
+            "axes": [
+                "t",
+                "c",
+                "z",
+                "y",
+                "x"
+            ],
+            "datasets": [
+                {
+                    "path": "s0"
+                },
+                {
+                    "path": "s1"
+                },
+                {
+                    "path": "s2"
+                }
+            ],
+            "metadata": {
+                "kwargs": {
+                    "axes_names": [
+                        "t",
+                        "c",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "is_label": true,
+                    "scale": 0.5
+                },
+                "method": "spacem_lib.io.utils.ngff_spatially_rescale",
+                "version": null
+            },
+            "name": "gaussian",
+            "type": "gaussian",
+            "version": "0.3"
+        }
+    ]
+}

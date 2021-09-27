@@ -1,0 +1,123 @@
+{
+    "multiscales": [
+        {
+            "_transformation": {
+                "parameters": [
+                    [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.2941924932075397,
+                        0.12296622011252208,
+                        335.249069576539
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.12296622011252208,
+                        1.2941924932075397,
+                        120.9254193546979
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                ],
+                "type": "affine"
+            },
+            "axes": [
+                "t",
+                "c",
+                "z",
+                "y",
+                "x"
+            ],
+            "datasets": [
+                {
+                    "path": "s0"
+                },
+                {
+                    "path": "s1"
+                }
+            ],
+            "metadata": {
+                "kwargs": {
+                    "axes_names": [
+                        "t",
+                        "c",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "is_label": false,
+                    "scale": 0.5
+                },
+                "method": "spacem_lib.io.utils.ngff_spatially_rescale",
+                "version": null
+            },
+            "name": "gaussian",
+            "type": "gaussian",
+            "version": "0.3"
+        }
+    ],
+    "omero": {
+        "channels": [
+            {
+                "active": true,
+                "blending": "opaque",
+                "color": "FFFFFF",
+                "family": "linear",
+                "inverted": false,
+                "label": "brightfield",
+                "window": {}
+            },
+            {
+                "active": true,
+                "blending": "additive",
+                "color": "29B354",
+                "family": "linear",
+                "inverted": false,
+                "label": "GFP",
+                "window": {}
+            },
+            {
+                "active": true,
+                "blending": "opaque",
+                "color": "0072BC",
+                "family": "linear",
+                "inverted": false,
+                "label": "DAPI",
+                "window": {}
+            }
+        ]
+    }
+}

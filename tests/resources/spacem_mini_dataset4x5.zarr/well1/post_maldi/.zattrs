@@ -1,0 +1,64 @@
+{
+    "multiscales": [
+        {
+            "axes": [
+                "t",
+                "c",
+                "z",
+                "y",
+                "x"
+            ],
+            "datasets": [
+                {
+                    "path": "s0"
+                },
+                {
+                    "path": "s1"
+                },
+                {
+                    "path": "s2"
+                }
+            ],
+            "metadata": {
+                "kwargs": {
+                    "axes_names": [
+                        "t",
+                        "c",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "is_label": false,
+                    "scale": 0.5
+                },
+                "method": "spacem_lib.io.utils.ngff_spatially_rescale",
+                "version": null
+            },
+            "name": "gaussian",
+            "type": "gaussian",
+            "version": "0.3"
+        }
+    ],
+    "omero": {
+        "channels": [
+            {
+                "active": true,
+                "blending": "opaque",
+                "color": "FFFFFF",
+                "family": "linear",
+                "inverted": false,
+                "label": "brightfield",
+                "window": {}
+            },
+            {
+                "active": true,
+                "blending": "additive",
+                "color": "29B354",
+                "family": "linear",
+                "inverted": false,
+                "label": "GFP",
+                "window": {}
+            }
+        ]
+    }
+}
