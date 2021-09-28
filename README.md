@@ -34,11 +34,49 @@ pip install git+https://github.com/aeisenbarth/ngff-writer
 
 ### Creating an NGFF dataset
 
+```python
+import dask.array as da
+import numpy as np
+from dask_image.imread import imread
+
+from ngff_writer.array_utils import affine_matrix_to_tczyx, to_tczyx
+from ngff_writer.writer import open_ngff_zarr
+
+with open_ngff_zarr(
+    store="output.zarr",
+    dimension_separator="/",
+    overwrite=True,
+) as f:
+    channel_paths = ["img_t1_z1_c0.tif", "img_t1_z1_c1.tif", "img_t1_z1_c2.tif"]
+    affine2d = np.array([[1.29, 0.12, 335.25], [-0.12, 1.29, 120.92], [0.0, 0.0, 1.0]])
+    transformation = {
+        "type": "affine",
+        "parameters": affine_matrix_to_tczyx(affine2d, axes_names=("y", "x")).tolist(),
+    }
+
+    collection = f.add_collection(name="well1")
+
+    image = collection.add_image(
+        image_name="microscopy1",
+        array=to_tczyx(
+            da.concatenate(imread(p) for p in channel_paths), axes_names=("c", "y", "x")
+        ),
+        transformation=transformation,
+        channel_names=["brightfield", "GFP", "DAPI"],
+    )
+
+    image.add_label(
+        name="cells",
+        array=to_tczyx(imread("cells.tif"), axes_names=("y", "x")),
+        transformation=transformation,
+    )
+```
+
 ### Reading an NGFF dataset
 
 Install additional packages:
 
-```
+```shell
 pip install napari[all]==0.4.10
 pip install git+https://github.com/aeisenbarth/ome-zarr-py@transformations-and-collections
 pip install git+https://github.com/aeisenbarth/napari-ome-zarr@transformations-and-collections
@@ -46,7 +84,7 @@ pip install git+https://github.com/aeisenbarth/napari-ome-zarr@transformations-a
 
 Start Napari, which will load the plugins…
 
-```
+```shell
 napari
 ```
 
