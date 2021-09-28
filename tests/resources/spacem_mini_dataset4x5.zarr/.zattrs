@@ -2,9 +2,9 @@
     "_collections": [
         {
             "images": {
-                "well1/ion_images": {},
-                "well1/post_maldi": {},
-                "well1/pre_maldi": {}
+                "w1/ion_images": {},
+                "w1/post_maldi": {},
+                "w1/pre_maldi": {}
             },
             "name": "well1"
         }

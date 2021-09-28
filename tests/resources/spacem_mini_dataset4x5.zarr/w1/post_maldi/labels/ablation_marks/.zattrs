@@ -1,4 +1,7 @@
 {
+    "image-label": {
+        "version": "0.3"
+    },
     "multiscales": [
         {
             "_transformation": {
@@ -31,17 +34,17 @@
                         0.0,
                         0.0,
                         0.0,
-                        -12.617181210409534,
-                        -92.54623026939119,
-                        1180.2313103330425
+                        1.0,
+                        0.0,
+                        650.0
                     ],
                     [
                         0.0,
                         0.0,
                         0.0,
-                        -96.82658437069699,
-                        12.367425971684398,
-                        667.6250792276121
+                        0.0,
+                        1.0,
+                        280.0
                     ],
                     [
                         0.0,
@@ -64,6 +67,12 @@
             "datasets": [
                 {
                     "path": "s0"
+                },
+                {
+                    "path": "s1"
+                },
+                {
+                    "path": "s2"
                 }
             ],
             "metadata": {
@@ -75,28 +84,15 @@
                         "y",
                         "x"
                     ],
-                    "is_label": false,
+                    "is_label": true,
                     "scale": 0.5
                 },
-                "method": "spacem_lib.io.utils.ngff_spatially_rescale",
+                "method": "ngff_writer.array_utils.ngff_spatially_rescale",
                 "version": null
             },
             "name": "gaussian",
             "type": "gaussian",
             "version": "0.3"
         }
-    ],
-    "omero": {
-        "channels": [
-            {
-                "active": true,
-                "color": "FFFFFF",
-                "colormap": "viridis",
-                "family": "linear",
-                "inverted": false,
-                "label": "",
-                "window": {}
-            }
-        ]
-    }
+    ]
 }

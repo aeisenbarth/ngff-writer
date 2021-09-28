@@ -31,7 +31,7 @@
                     "is_label": false,
                     "scale": 0.5
                 },
-                "method": "spacem_lib.io.utils.ngff_spatially_rescale",
+                "method": "ngff_writer.array_utils.ngff_spatially_rescale",
                 "version": null
             },
             "name": "gaussian",
@@ -48,7 +48,10 @@
                 "family": "linear",
                 "inverted": false,
                 "label": "brightfield",
-                "window": {}
+                "window": {
+                    "end": 51411,
+                    "start": 0
+                }
             },
             {
                 "active": true,
@@ -57,7 +60,10 @@
                 "family": "linear",
                 "inverted": false,
                 "label": "GFP",
-                "window": {}
+                "window": {
+                    "end": 7959,
+                    "start": 4
+                }
             }
         ]
     }

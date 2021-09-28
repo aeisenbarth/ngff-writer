@@ -84,7 +84,7 @@
                     "is_label": true,
                     "scale": 0.5
                 },
-                "method": "spacem_lib.io.utils.ngff_spatially_rescale",
+                "method": "ngff_writer.array_utils.ngff_spatially_rescale",
                 "version": null
             },
             "name": "gaussian",

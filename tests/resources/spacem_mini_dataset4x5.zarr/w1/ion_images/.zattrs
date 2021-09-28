@@ -31,17 +31,17 @@
                         0.0,
                         0.0,
                         0.0,
-                        1.2941924932075397,
-                        0.12296622011252208,
-                        335.249069576539
+                        -12.617181210409534,
+                        -92.54623026939119,
+                        1180.2313103330425
                     ],
                     [
                         0.0,
                         0.0,
                         0.0,
-                        -0.12296622011252208,
-                        1.2941924932075397,
-                        120.9254193546979
+                        -96.82658437069699,
+                        12.367425971684398,
+                        667.6250792276121
                     ],
                     [
                         0.0,
@@ -64,9 +64,6 @@
             "datasets": [
                 {
                     "path": "s0"
-                },
-                {
-                    "path": "s1"
                 }
             ],
             "metadata": {
@@ -81,7 +78,7 @@
                     "is_label": false,
                     "scale": 0.5
                 },
-                "method": "spacem_lib.io.utils.ngff_spatially_rescale",
+                "method": "ngff_writer.array_utils.ngff_spatially_rescale",
                 "version": null
             },
             "name": "gaussian",
@@ -95,28 +92,14 @@
                 "active": true,
                 "blending": "opaque",
                 "color": "FFFFFF",
+                "colormap": "viridis",
                 "family": "linear",
                 "inverted": false,
-                "label": "brightfield",
-                "window": {}
-            },
-            {
-                "active": true,
-                "blending": "additive",
-                "color": "29B354",
-                "family": "linear",
-                "inverted": false,
-                "label": "GFP",
-                "window": {}
-            },
-            {
-                "active": true,
-                "blending": "opaque",
-                "color": "0072BC",
-                "family": "linear",
-                "inverted": false,
-                "label": "DAPI",
-                "window": {}
+                "label": "",
+                "window": {
+                    "end": 2891.6328125,
+                    "start": 0.0
+                }
             }
         ]
     }
