@@ -174,3 +174,38 @@ def to_tczyx(
         array.shape[axes_names.index(axis)] if axis in axes_names else 1 for axis in DIMENSION_AXES
     )
     return array.transpose(axes_indices).reshape(shape)
+
+
+def affine_matrix_to_tczyx(
+    matrix: np.ndarray, axes_names: Sequence[DimensionAxisType]
+) -> Union[np.ndarray, da.Array]:
+    """
+    Convert an affine matrix of a subset of NGFF dimensions to an affine matrix for 5-dimensional
+    TCZYX space.
+
+    Args:
+        matrix: The affine matrix, e.g. 3×3 for 2D. The matrix must have one more dimension than
+            data axes.
+        axes_names: The data axes used by the matrix, for example ("x", "y")
+
+    Returns:
+        A 6×6 affine matrix for TCZYX space
+    """
+    assert len(axes_names) == len(set(axes_names))
+    assert set(axes_names) <= set(DIMENSION_AXES)
+    assert matrix.ndim == 2
+    assert matrix.shape[0] == matrix.shape[1] == len(axes_names) + 1
+    ndim = len(axes_names)
+    # Create an affine identity matrix (number of data dimensions + 1)
+    expanded_matrix = np.eye(len(DIMENSION_AXES) + 1)
+    # Insert the input matrix as a block at the beginning, and last column/row at the end.
+    expanded_matrix[0:ndim, :][:, 0:ndim] = matrix[:ndim, :][:, :ndim]
+    expanded_matrix[0:ndim, -1:] = matrix[:-1, -1:]
+    expanded_matrix[-1:, 0:ndim] = matrix[-1:, :-1]
+    expanded_matrix[-1, -1] = matrix[-1, -1]
+    # Reorder the columns and rows to match DIMENSION_AXES, keep the last column/row unchanged.
+    missing_axes_names = [axis for axis in DIMENSION_AXES if axis not in axes_names]
+    expanded_axes_names = list(axes_names) + missing_axes_names
+    last_index = expanded_matrix.shape[0] - 1
+    axes_indices = [expanded_axes_names.index(axis) for axis in DIMENSION_AXES] + [last_index]
+    return expanded_matrix[axes_indices, :][:, axes_indices]
