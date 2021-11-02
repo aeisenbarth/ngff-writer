@@ -11,9 +11,7 @@ from zarr.storage import FSStore
 
 from ngff_writer.dask_utils import resize as dask_resize
 from ngff_writer.writer import NgffImage, NgffZarr, open_ngff_zarr
-from ngff_writer.writer_utils import (
-    array_to_zarr,
-)
+from ngff_writer.writer_utils import array_to_zarr
 from ngff_writer.array_utils import (
     apply_over_axes,
     ngff_spatially_rescale,
