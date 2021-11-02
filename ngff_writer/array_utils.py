@@ -11,6 +11,7 @@ from dask import array as da
 from ngff_writer.constants import DIMENSION_AXES, SPATIAL_DIMENSIONS
 from ngff_writer.dask_utils import downscale_nearest
 from ngff_writer.typing import DimensionAxisType
+from ngff_writer.validation import validate_axes_names
 
 
 def apply_over_axes(
@@ -56,18 +57,17 @@ def ngff_spatially_rescale(
     Rescales an NGFF image taking into account only spatial dimensions.
 
     Args:
-        image: Input image.
-        scale: Upscale factor.
+        image: Input image
+        scale: Downscale factor
         axes_names: List of NGFF axis names matching the input image's axes
         is_label: Whether this is a label image and
 
     Returns:
         NGFF image with spatial dimensions rescaled and other dimensions unchanged.
     """
-    assert scale > 0
-    assert len(axes_names) == len(set(axes_names))
-    assert set(axes_names) <= set(DIMENSION_AXES)
-    assert image.ndim == len(axes_names)
+    if not scale > 0:
+        raise ValueError(f"Downscale factor must be greater 0: {scale}")
+    validate_axes_names(axes_names=axes_names, n_expected_axes=image.ndim)
     if isinstance(image, da.Array):
         # _resize = dask_resize
         factors = tuple(
@@ -129,14 +129,21 @@ def select_dimensions(
     Returns:
         An array with only selected dimensions in specified order
     """
-    assert len(set(selected_dimension_axes)) == len(selected_dimension_axes)
-    assert len(set(all_dimension_axes)) == len(all_dimension_axes)
-    assert set(selected_dimension_axes) <= set(all_dimension_axes)
+    validate_axes_names(
+        axes_names=selected_dimension_axes,
+        n_expected_axes=len(selected_dimension_axes),
+        allowed_axes_names=all_dimension_axes,
+    )
+    if not len(set(all_dimension_axes)) == len(all_dimension_axes):
+        raise ValueError(f"Selected dimension axes are not unique: {selected_dimension_axes}")
     slices = [slice(None)] * 5
     sliced_axes = []
     for d, dim_name in enumerate(all_dimension_axes):
         if dim_name not in selected_dimension_axes:
-            assert array.shape[d] == 1
+            if not array.shape[d] == 1:
+                raise ValueError(
+                    f"Only singleton dimensions can be selected implicitely, but dimension {dim_name} has size {array.shape[d]}"
+                )
             slices[d] = 0
         else:
             sliced_axes.append(dim_name)
@@ -165,9 +172,7 @@ def to_tczyx(
     Returns:
         A 5-dimensional array
     """
-    assert len(axes_names) == len(set(axes_names))
-    assert set(axes_names) <= set(DIMENSION_AXES)
-    assert array.ndim == len(axes_names)
+    validate_axes_names(axes_names=axes_names, n_expected_axes=array.ndim)
     ordered_axes_names = [axis for axis in DIMENSION_AXES if axis in axes_names]
     axes_indices = [axes_names.index(axis) for axis in ordered_axes_names]
     shape = tuple(

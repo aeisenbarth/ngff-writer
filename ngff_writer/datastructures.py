@@ -77,11 +77,14 @@ class _NgffImageBase(_NgffBase):
         Returns:
             An array
         """
-        assert len(self.group.attrs.get("multiscales", [])) >= 1
+        if len(self.group.attrs.get("multiscales", [])) < 1:
+            raise ValueError("Multiscales metadata must be present and have at least one entry.")
         multiscale_metadata = self.group.attrs["multiscales"][0]
-        assert len(multiscale_metadata.get("datasets", [])) >= 1
+        if len(multiscale_metadata.get("datasets", [])) < 1:
+            raise ValueError("Multiscales must have at least one dataset.")
         dataset_paths = [dct["path"] for dct in multiscale_metadata["datasets"]]
-        assert level < len(dataset_paths), f"Image does not have a pyramid for level {level}"
+        if level >= len(dataset_paths):
+            raise ValueError(f"Image does not have a pyramid for level {level}")
         dataset_path = dataset_paths[level]
         array = self.group[dataset_path]
         if as_dask:
@@ -129,9 +132,11 @@ class _NgffImageBase(_NgffBase):
         Returns a list of channel names. Raises an error if no names are defined. The order of the
         names corresponds to the C dimension of the array.
         """
-        assert "omero" in self.group.attrs
+        if "omero" not in self.group.attrs:
+            raise ValueError("Omero metadata must be present.")
         omero_metadata = self.group.attrs["omero"]
-        assert "channels" in omero_metadata
+        if "channels" not in omero_metadata:
+            raise ValueError("No omero channels entry")
         return [dct.get("label") for dct in omero_metadata["channels"]]
 
     @property
@@ -140,7 +145,8 @@ class _NgffImageBase(_NgffBase):
         Returns the transformation parameters if a transformation is defined, otherwise None.
         To be used for initializing a transformation object.
         """
-        assert len(self.group.attrs.get("multiscales", [])) >= 1
+        if len(self.group.attrs.get("multiscales", [])) < 1:
+            raise ValueError("Multiscales metadata must be present and have at least one entry.")
         multiscale_metadata = self.group.attrs["multiscales"][0]
         transformation = multiscale_metadata.get("_transformation")
         if transformation is not None and transformation["type"] == "affine":
@@ -262,7 +268,8 @@ class NgffImage(_NgffImageBase):
             # Image does not have any labels
             return {}
         labels_group = self.group["labels"]
-        assert "labels" in labels_group.attrs
+        if "labels" not in labels_group.attrs:
+            raise ValueError("Labels metadata missing")
         label_paths = self.group["labels"].attrs["labels"]
         return {
             label_path: NgffLabel(
@@ -378,7 +385,8 @@ class NgffCollection(_NgffBase):
         Returns:
             Instance of a wrapper around NGFF-Zarr image
         """
-        assert not re.match(ZARR_DISALLOWED_CHARS_REGEX, image_name)
+        if re.match(ZARR_DISALLOWED_CHARS_REGEX, image_name):
+            raise ValueError("Image name contains disallowed characters.")
         image_path = str(Path(self.name, image_name))
         image_group = self.group.require_group(image_path, overwrite=self.overwrite)
         ngff_image = add_image(
@@ -430,7 +438,8 @@ class NgffCollections:
         Returns:
             Instance of a wrapper around NGFF-Zarr collection
         """
-        assert not re.match(ZARR_DISALLOWED_CHARS_REGEX, name)
+        if re.match(ZARR_DISALLOWED_CHARS_REGEX, name):
+            raise ValueError("Collection name contains disallowed characters.")
         add_collection_metadata(self.group, collection_name=name)
         return NgffCollection(group=self.group, name=name, **self._collection_kwargs)
 
@@ -497,7 +506,8 @@ class NgffZarr(NgffCollections, NgffCollection, NgffImage, NgffLabel):
             Instance of a wrapper around NGFF-Zarr image
         """
         if image_name is not None:
-            assert not re.match(ZARR_DISALLOWED_CHARS_REGEX, image_name)
+            if re.match(ZARR_DISALLOWED_CHARS_REGEX, image_name):
+                raise ValueError("Image name contains disallowed characters.")
             image_group = self.group.require_group(image_name, overwrite=self.overwrite)
         else:
             image_group = self.group

@@ -51,7 +51,13 @@ def downscale_nearest(image: da.Array, factors: Tuple[int, ...]) -> da.Array:
     Returns:
         Resized image.
     """
-    assert len(factors) == image.ndim
-    assert all(isinstance(f, int) and f <= d for f, d in zip(factors, image.shape))
+    if not len(factors) == image.ndim:
+        raise ValueError(
+            f"Dimension mismatch: {image.ndim} image dimensions, {len(factors)} scale factors"
+        )
+    if not (all(isinstance(f, int) and 0 < f <= d for f, d in zip(factors, image.shape))):
+        raise ValueError(
+            f"All scale factors must not be greater than the dimension length: ({tuple(factors)}) <= ({tuple(image.shape)})"
+        )
     slices = tuple(slice(None, None, factor) for factor in factors)
     return image[slices]

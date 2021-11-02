@@ -17,7 +17,8 @@ def nested_dict_apply_fn_at_path(
             key.
         create: Whether to create missing keys by inserting a new dictionary. Defaults to True.
     """
-    assert isinstance(key_path, Sequence) and all(isinstance(k, (str, int)) for k in key_path)
+    if not (isinstance(key_path, Sequence) and all(isinstance(k, (str, int)) for k in key_path)):
+        raise ValueError("Argument key_path must only contain strings of integers.")
     node = nested_dict
     for i, key in reversed(list(enumerate(reversed(key_path)))):
         if isinstance(node, dict) and key not in node:

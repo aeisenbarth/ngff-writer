@@ -128,7 +128,8 @@ def add_label(
     overwrite: bool = False,
     dimension_separator: DimensionSeparatorType = DIMENSION_SEPARATOR,
 ) -> "spacem_lib.io.writer.NgffLabel":
-    assert name is None or not re.match(ZARR_DISALLOWED_CHARS_REGEX, name)
+    if name is not None and re.match(ZARR_DISALLOWED_CHARS_REGEX, name):
+        raise ValueError("Label image name contains disallowed characters.")
 
     labels_group: zarr.Group = group.require_group("labels")
     name = str(len(list(labels_group.group_keys()))) if name is None else name
