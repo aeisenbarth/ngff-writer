@@ -90,6 +90,8 @@ napari ./tests/resources/spacem_mini_dataset4x5.zarr
 
 …or drag&drop an NGFF dataset.
 
+![Screenshot of Napari with multiple transformed layers](./images/screenshot.png)
+
 ## Comments for discussion
 
  -  Generalizing **downscalers** or making downscalers customizable turned out to be complicated, 
@@ -120,4 +122,5 @@ napari ./tests/resources/spacem_mini_dataset4x5.zarr
  -  Transformations: This implementation uses an **affine matrix for 5-dimensions** (thus a 6×6 matrix), 
     which is the simplest approach ignoring that only some dimensions are actually spatial. 
     Since the Napari plugin splits channels of 5D arrays into separate layers (4D), the 
-    channel dimension must also be stripped out of the matrix.
+    channel dimension must also be stripped out of the matrix. 
+
